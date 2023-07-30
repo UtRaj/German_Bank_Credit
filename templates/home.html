@@ -1,5 +1,325 @@
-<html>
-    <h2>
-        Hello wordl
-    </h2>
-</html>
+
+
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Credit Risk Classification</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  
+</head>
+<style>
+body  {
+  background-color: lavender;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.predict {
+    margin: auto;
+    width: 80%;
+	font-family: 'Gotham', sans-serif; /* Use Gotham font or a fallback sans-serif font */
+    font-size: 15px;
+    border: 2px solid #007BFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+	position: relative;
+}
+
+.predict h2 {
+  font-family: 'Gotham', sans-serif; /* Use Gotham font or a fallback sans-serif font */
+  font-size: 28px;
+  text-align: center;
+  margin: 10px 0;
+  color: #007BFF;
+  margin-bottom: 20px;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+fieldset legend {
+  font-family: 'Gotham', sans-serif; 
+  font-size: 20px;
+  font-weight: bold;
+  color: #007BFF;
+}
+
+.predict p {
+  margin: 10px 0;
+}
+
+.predict select,
+.predict input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Times New Roman', serif;
+  font-size: 16px;
+}
+
+
+.predict select option:first-child[disabled] {
+  color: #999; /* Change the color to grey (#999) for the first disabled option */
+}
+
+.predict button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Times New Roman', serif;
+  font-size: 18px;
+}
+
+.predict button:hover {
+  background-color: #0056b3;
+}
+
+.output-section {
+  text-align: center;
+}
+
+.prediction-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d413cb;
+  animation-name: slide-up;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.output-box {
+  background-color: #f8f8f8;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+</style>
+<body>
+  <div class="container">
+    <div class="predict">
+      <h2>Credit Risk Prediction</h2>
+      <form action="{{ url_for('predict')}}" method="post">
+
+			<p><b>Status :</b><br>
+				<select name="status" id="status" required>
+					<option value="" disabled selected>status of the debtor's checking account with the bank</option>
+					<option value="0">... < 0 DM</option>
+					<option value="1">... >= 200 DM / salary for at least 1 year</option>
+					<option value="2">0<= ... < 200 DM</option>
+					<option value="3">no checking account</option>
+				</select></p>	
+
+
+			<p><b>Duration:</b><br>
+			<input type="number" name="duration" placeholder="credit duration in months" required="required" /></p>
+						
+
+				<p><b>Credit History :</b><br>
+				<select name="credit_history" id="credit_history" required>
+					<option value="" disabled selected>history of compliance with previous or concurrent credit contracts</option>
+					<option value="0">All credits at this bank paid back duly</option>
+					<option value="1">Critical account/other credits elsewhere</option>
+					<option value="2">Delay in paying off in the past</option>
+					<option value="3">Existing credits paid back duly till now</option>
+					<option value="4">No credits taken/all credits paid back duly</option>
+				</select></p>	
+				
+				
+				<p><b>Purpose:</b><br>
+				<select name="purpose" id="purpose" required>
+					<option value="" disabled selected>purpose for which the credit is needed</option>
+					<option value="0">Business</option>
+					<option value="1">Car(New)</option>
+					<option value="2">Car(Used)</option>
+					<option value="3">Domestic Appliances</option>
+					<option value="4">Furniture/Equipment</option>
+					<option value="5">Others</option>
+					<option value="6">Radio/Television</option>
+					<option value="7">Repairs</option>
+					<option value="8">Retraining</option>
+					<option value="9">Vacation</option>
+				</select></p>
+			
+
+			<p><b>Amount:</b><br>
+			<input type="number" name="amount" placeholder="credit amount" required="required" /></p>
+
+				
+				<p><b>Savings:</b><br>
+				<select name="savings" id="savings" required>
+					<option value="" disabled selected>debtor's savings</option>
+					<option value="0">... <  100 DM</option>
+					<option value="1">... >= 1000 DM</option>
+					<option value="2">100 <= ... <  500 DM </option>
+					<option value="3">500 <= ... < 1000 DM</option>
+					<option value="4">unknown/no savings account</option>
+				</select></p>
+
+
+				<p><b>Employment Duration:</b><br>
+					<select name="employment_duration" id="employment_duration" required>
+						<option value="" disabled selected>duration of debtor's employment with current employer</option>
+						<option value="0">1 <= ... < 4 yrs</option>
+						<option value="1">4 <= ... < 7 yrs</option>
+						<option value="2">< 1 yr</option>
+						<option value="3">>= 7 yrs</option>
+						<option value="4">unemployed</option>
+					</select></p>
+
+
+				<p><b>Installment Rate:</b><br>
+					<select name="installment_rate" id="installment_rate" required>
+						<option value="" disabled selected>credit installments as a percentage of debtor's disposable income</option>
+						<option value="0">20 <= ... < 25</option>
+						<option value="1">25 <= ... < 35</option>
+						<option value="2">< 20</option>
+						<option value="3">>= 35</option>
+					</select></p>
+		
+				<p><b>Personal Status Sex:</b><br>
+					<select name="personal_status_sex" id="personal_status_sex" required>
+						<option value="" disabled selected>combined information on sex and marital status</option>
+						<option value="0">Female : non-single or male : single</option>
+						<option value="1">Female : single</option>
+						<option value="2">Male : divorced/separated </option>
+						<option value="3">Male : married/widowed</option>
+					</select></p>		
+			
+
+				<p><b>Is there another debtor or a guarantor for the credit? :</b><br>
+					<select name="other_debtors" id="other_debtors" required>
+						<option value="0">Co-Applicant</option>
+						<option value="1">Guarantor </option>
+						<option value="2">None </option>
+					</select></p>
+				
+
+				<p><b>How long have you been living in your current residence? :</b><br>
+						<select name="present_residence" id="present_residence" required>
+							<option value="0">1 <= ... < 4 yrs</option>
+							<option value="1">4 <= ... < 7 yrs</option>
+							<option value="2">< 1 yr</option>
+							<option value="3">>= 7 yrs</option>
+						</select></p>
+
+				<p><b>What is the most valuable property that you own? :</b><br>
+						<select name="property" id="property" required>
+								<option value="0">Building soc. savings agr./Life Insurance</option>
+								<option value="1">Car or other</option>
+								<option value="2">Real Estate </option>
+								<option value="3">Unknown / No Property </option>
+							</select></p>
+
+				<p><b>What is your Age? :</b><br>
+					<input type="number" name="age" placeholder="Your Current Age" required="required" /></p>
+
+				
+				<p><b>Do you have any other installment plans elsewhere? :</b><br>
+					<select name="other_installment_plans" id="other_installment_plans" required>
+						<option value="0">Another Bank</option>
+						<option value="1">None</option>
+						<option value="2">Stores </option>
+					</select></p>
+					
+		
+				
+				<b>What kind of housing do you live in?:</b><br>
+					<select name="housing" id="housing" required>
+						<option value="" disabled selected>type of housing the debtor lives in</option>
+						<option value="0">For Free</option>
+						<option value="1">Own House</option>
+						<option value="2">Rent </option>
+					</select></p>
+
+
+				
+				<p><b>Number of Credits :</b><br>
+					<select name="number_credits" id="number_credits" required>
+						<option value="" disabled selected>number of credits including the current one the debtor has (or had) at this bank</option>
+						<option value="0">Atleast 1</option>
+						<option value="1">2 to 3</option>
+						<option value="2">4 to 5</option>
+						<option value="3">6 or more</option>
+					</select></p>
+					
+			
+				<p><b>Your Job :</b><br>
+					<select name="job" id="job" required>
+						<option value="" disabled selected>Quality of debtor's job</option>
+						<option value="0">Manager/(Self-Employed)/(Highly Qualified Employee)</option>
+						<option value="1">Skilled Employee/(Official) </option>
+						<option value="2">Unemployed/(Unskilled - Non-Resident)</option>
+						<option value="3">Unskilled - (Resident)</option>
+					</select></p>
+			
+					
+			    <p><b>People Liability :</b><br>
+					<select name="people_liable" id="people_liable" required>
+							<option value="" disabled selected>Number of persons who financially dependent on the debtor</option>
+							<option value="0">0 to 2</option>
+							<option value="1">3 or more</option>
+						</select></p>
+
+
+				<p><b>Is there a telephone registered on  your name? :</b><br>
+					<select name="telephone" id="telephone" required>
+							<option value="0">No</option>
+							<option value="1">Yes</option>
+						</select></p>
+
+
+
+				<p><b>Are you a Foreign Worker? :</b><br>
+					<select name="foreign_worker" id="foreign_worker" required>
+							<option value="0">No</option>
+							<option value="1">Yes</option>
+						</select></p>
+				
+		
+		<div style="text-align:center;">
+			<button type="submit" class="btn btn-primary btn-block btn-large"><b>Predict Risk</b></button>
+        </div>
+      </form>
+	  <div class="output-box">
+		<div class="prediction-text">
+		  {{prediction_text}}
+		</div>
+	  </div>
+	</div>
+  </body>
+  </html>

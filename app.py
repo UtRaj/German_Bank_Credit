@@ -17,9 +17,9 @@ def predict_api():
 
     # Check if all required features are present in the input data
     required_features = ['status', 'duration', 'credit_history', 'purpose', 'amount',
-                         'savings', 'personal_status_sex','property', 'age', 
-                         'other_installment_plans','housing', 'number_credits', 
-                         'job',  'telephone', 'foreign_worker']
+                         'savings', 'personal_status_sex','property', 'age', 'people_liable','installment_rate', 
+                         'other_installment_plans','housing', 'other_debtors','employment_duration','number_credits', 
+                         'job', 'present_residence','telephone', 'foreign_worker']
 
     if not all(feature in data['data'] for feature in required_features):
         return jsonify({"error": "Missing required features"}), 400
@@ -36,14 +36,22 @@ def predict_api():
     return jsonify({"credit_risk": output})
 
 
-@app.route('/predict',methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    data =[int(x) for x in request.form.values()]
-    final_input = scaler.transform(np.array(data).reshape(1,-1))
+    data = [x.replace(',', '') for x in request.form.values()]
+    data = [int(x) for x in request.form.values()]
+    final_input = scaler.transform(np.array(data).reshape(1, -1))
     print(final_input)
     output = model.predict(final_input)
-    output = int(output[0])
-    return render_template('home.html',prediction_text="The credit risk is:- {}".format(output))
+    credit_risk = int(output[0])
+
+    # Determine the message based on the credit risk prediction
+    if credit_risk == 1:
+        risk_message = "a Good Risk."
+    else:
+        risk_message = "a Bad Risk."
+
+    return render_template('home.html', prediction_text="It is {}".format(risk_message))
 
 
 if __name__ == '__main__':
