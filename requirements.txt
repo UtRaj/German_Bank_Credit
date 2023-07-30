@@ -3,3 +3,4 @@ matplotlib==3.5.3
 seaborn==0.12.2
 xgboost==1.6.2
 Flask==2.2.2
+waitress==2.1.2
