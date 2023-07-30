@@ -56,5 +56,6 @@ def predict():
 
 
 if __name__ == '__main__':
-    # Use Waitress to serve the Flask app on localhost:8080
-    serve(app, host='127.0.0.1', port=8080)
+    # Use Waitress as the WSGI server
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=port)
