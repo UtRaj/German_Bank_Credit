@@ -1,11 +1,12 @@
+
+
 import pickle
 from flask import Flask, request, jsonify, render_template
 import numpy as np
-from waitress import serve  # Import Waitress
 
 app = Flask(__name__)
 model = pickle.load(open('ineuron_bank', 'rb'))
-scaler = pickle.load(open('scaling', 'rb'))
+scaler = pickle.load(open('scaling','rb'))
 
 @app.route('/')
 def home():
@@ -18,9 +19,9 @@ def predict_api():
 
     # Check if all required features are present in the input data
     required_features = ['status', 'duration', 'credit_history', 'purpose', 'amount',
-                         'savings', 'personal_status_sex', 'property', 'age', 'people_liable', 'installment_rate',
-                         'other_installment_plans', 'housing', 'other_debtors', 'employment_duration',
-                         'number_credits', 'job', 'present_residence', 'telephone', 'foreign_worker']
+                         'savings', 'personal_status_sex','property', 'age', 'people_liable','installment_rate', 
+                         'other_installment_plans','housing', 'other_debtors','employment_duration','number_credits', 
+                         'job', 'present_residence','telephone', 'foreign_worker']
 
     if not all(feature in data['data'] for feature in required_features):
         return jsonify({"error": "Missing required features"}), 400
@@ -39,7 +40,6 @@ def predict_api():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = [x.replace(',', '') for x in request.form.values()]
     data = [int(x) for x in request.form.values()]
     final_input = scaler.transform(np.array(data).reshape(1, -1))
     print(final_input)
@@ -56,6 +56,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    # Use Waitress as the WSGI server
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=port)
+    app.run(debug=True)

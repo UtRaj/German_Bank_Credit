@@ -1,6 +1,6 @@
-scikit-learn==1.0.2
-matplotlib==3.5.3
+scikit-learn==1.2.2
+matplotlib==3.7.2
 seaborn==0.12.2
-xgboost==1.6.2
-Flask==2.2.2
+xgboost==1.7.6
+Flask==2.3.2
 waitress==2.1.2
