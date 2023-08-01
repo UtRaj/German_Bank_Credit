@@ -3,6 +3,7 @@
 import pickle
 from flask import Flask, request, jsonify, render_template
 import numpy as np
+from waitress import serve
 
 app = Flask(__name__)
 model = pickle.load(open('ineuron_bank', 'rb'))
@@ -56,4 +57,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    serve(app, host='0.0.0.0', port=8080)
