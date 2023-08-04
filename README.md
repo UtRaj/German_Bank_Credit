@@ -3,8 +3,6 @@ This is an end-to-end ML project , which aims at developing a binary classificat
 
 The final classifier used for this project is Gradient Boosting classifier. 
 
-It is Deployed in Heroku.
-
 
 # Motivation
 Normally, most of the bank's wealth is obtained from providing credit loans so that a marketing bank must be able to reduce the risk of non-performing credit loans. The risk of providing loans can be minimized by studying patterns from existing lending data.
@@ -37,5 +35,5 @@ Link : (https://archive.ics.uci.edu/ml/datasets/South+German+Credit)
 6. Pickle File                             :  Selected model as per best accuracy and created pickle file using Pickle .
 
 7. Webpage & deployment                    :  1. Created a web form that takes all the necessary inputs from user and  shows output.
-                                              2. We had to Deploy at Heroku Platform.
+                                              2. We had to locally deploy in Flask.
                       
